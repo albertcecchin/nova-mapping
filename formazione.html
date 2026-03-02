@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>NØVA Mapping — Piano di Formazione</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root {
+    --cyan: #00E5FF;
+    --cyan-dim: #00B8D4;
+    --cyan-soft: rgba(0,229,255,.12);
+    --cyan-glow: rgba(0,229,255,.18);
+    --cyan-glow-strong: rgba(0,229,255,.35);
+    --void: #08080C;
+    --surface: rgba(255,255,255,.04);
+    --surface-solid: #101014;
+    --surface-2: rgba(255,255,255,.06);
+    --surface-3: rgba(255,255,255,.08);
+    --surface-border: rgba(255,255,255,.08);
+    --surface-border-hover: rgba(255,255,255,.14);
+    --glass: rgba(16,16,22,.72);
+    --glass-strong: rgba(16,16,22,.85);
+    --text: #C8C8D0;
+    --text-dim: #7A7A88;
+    --text-bright: #F0F0F5;
+    --green: #34D399;
+    --green-dim: rgba(52,211,153,.15);
+    --orange: #FB923C;
+    --orange-dim: rgba(251,146,60,.15);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --blur: 16px;
+  }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--void);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 160px;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -40%;
+    left: -20%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(0,229,255,.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    right: -20%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(0,184,212,.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--surface-border);
+    padding: 1.4rem 1.2rem 1.2rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: .06em;
+    text-shadow: 0 0 30px rgba(0,229,255,.3);
+  }
+  .header .sub {
+    font-size: .85rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-top: .2rem;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.4rem;
+    margin-top: .7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: var(--cyan-dim);
+    letter-spacing: .02em;
+  }
+
+  .progress-bar {
+    margin: 0 1rem;
+    padding: .8rem 0 .4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .pbar {
+    background: var(--surface-3);
+    border-radius: 10px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .pfill {
+    background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
+    height: 100%;
+    border-radius: 10px;
+    width: 0%;
+    transition: width .8s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 12px rgba(0,229,255,.3);
+  }
+  .ptext {
+    display: flex;
+    justify-content: space-between;
+    font-size: .7rem;
+    color: var(--text-dim);
+    margin-top: .35rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero {
+    margin: .6rem 1rem;
+    padding: 1.2rem 1.2rem 1rem;
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--cyan-glow);
+    border-radius: var(--radius);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    animation: heroGlow 4s ease-in-out infinite alternate;
+  }
+  @keyframes heroGlow {
+    0% { box-shadow: 0 0 20px rgba(0,229,255,.06), inset 0 0 20px rgba(0,229,255,.03); }
+    100% { box-shadow: 0 0 30px rgba(0,229,255,.12), inset 0 0 30px rgba(0,229,255,.05); }
+  }
+  .hero-label {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--cyan-dim);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .3rem;
+  }
+  .hero-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: .8rem;
+    line-height: 1.4;
+  }
+  .hero-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 100%;
+    padding: .9rem;
+    min-height: 56px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: linear-gradient(135deg, var(--cyan-dim), var(--cyan));
+    color: var(--void);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .02em;
+  }
+  .hero-btn:hover { filter: brightness(1.1); }
+  .hero-btn:active { transform: scale(.97); }
+  .hero-completed {
+    text-align: center;
+    padding: .4rem 0;
+  }
+  .hero-completed .check {
+    font-size: 1.6rem;
+    margin-bottom: .3rem;
+  }
+  .hero-completed p {
+    font-size: .9rem;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .week-nav {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: .6rem .8rem;
+    gap: .5rem;
+    background: var(--glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--surface-border);
+    position: sticky;
+    top: 82px;
+    z-index: 99;
+  }
+  .week-nav::-webkit-scrollbar { display: none }
+  .wtab {
+    flex-shrink: 0;
+    padding: .6rem 1.2rem;
+    min-height: 44px;
+    border-radius: 22px;
+    font-size: .8rem;
+    font-weight: 500;
+    border: 1px solid var(--surface-border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all .3s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .wtab:hover {
+    border-color: var(--surface-border-hover);
+    color: var(--text);
+    background: var(--surface);
+  }
+  .wtab.active {
+    background: var(--cyan-soft);
+    border-color: rgba(0,229,255,.3);
+    color: var(--cyan);
+    box-shadow: 0 0 16px rgba(0,229,255,.1);
+  }
+
+  .content {
+    padding: .5rem .8rem 0;
+    position: relative;
+    z-index: 1;
+  }
+  .wsec { display: none; }
+  .wsec.active { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .whead { padding: .8rem .2rem .5rem; }
+  .whead h2 { font-size: 1.05rem; font-weight: 700; color: var(--text-bright); }
+  .whead p { font-size: .8rem; color: var(--text-dim); margin-top: .15rem; }
+
+  .intro-card {
+    padding: 1.1rem 1.2rem;
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border-radius: var(--radius);
+    border: 1px solid var(--surface-border);
+    margin-bottom: .6rem;
+    transition: border-color .3s;
+  }
+  .intro-card:hover { border-color: var(--surface-border-hover); }
+  .intro-card h3 { font-size: .9rem; color: var(--cyan); margin-bottom: .4rem; font-weight: 600; }
+  .intro-card p { font-size: .82rem; color: var(--text); line-height: 1.6; }
+
+  .day {
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border-radius: var(--radius);
+    border: 1px solid var(--surface-border);
+    margin-bottom: .6rem;
+    overflow: hidden;
+    transition: border-color .3s, box-shadow .3s;
+  }
+  .day:hover { border-color: var(--surface-border-hover); }
+  .day.playing {
+    border-color: rgba(0,229,255,.3);
+    box-shadow: 0 0 20px rgba(0,229,255,.08);
+  }
+  .day.done { border-color: rgba(52,211,153,.3); }
+  .day.done .dhead { opacity: .65; }
+
+  .dhead {
+    display: flex;
+    align-items: center;
+    padding: .9rem 1.1rem;
+    min-height: 56px;
+    cursor: pointer;
+    gap: .8rem;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .dnum {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--cyan);
+    flex-shrink: 0;
+    transition: all .4s cubic-bezier(.4,0,.2,1);
+  }
+  .day.done .dnum {
+    background: var(--green);
+    color: var(--void);
+    box-shadow: 0 0 12px rgba(52,211,153,.25);
+  }
+  @keyframes donePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+  }
+  .dinfo { flex: 1; min-width: 0; }
+  .dtitle {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dmeta {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-top: .2rem;
+    font-size: .72rem;
+    color: var(--text-dim);
+  }
+  .lang {
+    padding: .15rem .45rem;
+    border-radius: 4px;
+    font-size: .6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .lang-it { background: rgba(52,211,153,.12); color: var(--green); }
+  .lang-en { background: rgba(96,165,250,.12); color: #60A5FA; }
+  .dur { font-family: 'JetBrains Mono', monospace; }
+  .darrow {
+    color: var(--text-dim);
+    font-size: .9rem;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
+    flex-shrink: 0;
+  }
+  .day.open .darrow { transform: rotate(180deg); }
+
+  .dbody {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .35s cubic-bezier(.4,0,.2,1);
+  }
+  .day.open .dbody { grid-template-rows: 1fr; }
+  .dbody-inner { overflow: hidden; }
+  .dbody-content {
+    padding: 0 1.1rem 1.1rem;
+    border-top: 1px solid var(--surface-border);
+  }
+
+  .slabel {
+    font-size: .7rem;
+    color: var(--cyan-dim);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: .9rem;
+    margin-bottom: .25rem;
+    font-weight: 600;
+  }
+  .sname {
+    font-size: .85rem;
+    color: var(--text-bright);
+    margin-bottom: .4rem;
+    line-height: 1.4;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-top: .5rem;
+  }
+  .abtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    padding: .65rem 1rem;
+    min-height: 48px;
+    border-radius: var(--radius-sm);
+    font-size: .82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .01em;
+  }
+  .abtn:active { transform: scale(.96); }
+
+  .abtn-tts {
+    background: linear-gradient(135deg, var(--cyan-dim), var(--cyan));
+    color: var(--void);
+    flex: 1;
+    min-width: 120px;
+  }
+  .abtn-tts:hover { filter: brightness(1.1); }
+  .abtn-tts.playing {
+    background: linear-gradient(135deg, #F97316, var(--orange));
+    animation: pulse 2s infinite;
+  }
+  .abtn-link {
+    background: var(--cyan-soft);
+    border: 1px solid rgba(0,229,255,.2);
+    color: var(--cyan);
+  }
+  .abtn-link:hover { background: var(--cyan-glow); border-color: rgba(0,229,255,.35); }
+  .abtn-done {
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    color: var(--text-dim);
+  }
+  .abtn-done:hover { border-color: rgba(52,211,153,.4); color: var(--green); }
+  .day.done .abtn-done {
+    border-color: rgba(52,211,153,.4);
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.75} }
+
+  .learn {
+    margin-top: .7rem;
+    padding: .8rem 1rem;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--surface-border);
+  }
+  .learn .ll {
+    font-size: .68rem;
+    color: var(--orange);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .25rem;
+  }
+  .learn p {
+    font-size: .82rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(0,229,255,.2);
+    padding: .8rem 1rem 1rem;
+    z-index: 200;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform .4s cubic-bezier(.4,0,.2,1), opacity .3s;
+  }
+  .player.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .player-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem;
+    margin-bottom: .5rem;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-day {
+    font-size: .72rem;
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .player-title {
+    font-size: .88rem;
+    color: var(--text-bright);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .player-meta {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    flex-shrink: 0;
+  }
+
+  .speed-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .3rem .6rem;
+    min-height: 40px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--surface-3);
+    color: var(--text-dim);
+    cursor: pointer;
+    border: 1px solid var(--surface-border);
+    transition: all .2s;
+  }
+  .speed-badge:hover { color: var(--cyan); border-color: rgba(0,229,255,.2); }
+  .speed-badge:active { transform: scale(.95); }
+
+  .player-close {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text-dim);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+  }
+  .player-close:hover { color: var(--text-bright); border-color: var(--surface-border-hover); }
+  .player-close:active { transform: scale(.95); }
+
+  .player-progress-wrap {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: .5rem;
+  }
+  .player-progress {
+    width: 100%;
+    height: 12px;
+    background: var(--surface-3);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .player-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
+    border-radius: 6px;
+    width: 0%;
+    transition: width .3s;
+    box-shadow: 0 0 8px rgba(0,229,255,.25);
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+  .pbtn {
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .pbtn:active { transform: scale(.92); }
+  .pbtn-play {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--cyan-dim), var(--cyan));
+    color: var(--void);
+    font-size: 1.5rem;
+    box-shadow: 0 0 24px rgba(0,229,255,.25);
+  }
+  .pbtn-play:hover { filter: brightness(1.1); box-shadow: 0 0 32px rgba(0,229,255,.35); }
+  .pbtn-sm {
+    width: 48px;
+    height: 48px;
+    background: var(--surface-3);
+    color: var(--text);
+    font-size: 1.1rem;
+    border: 1px solid var(--surface-border);
+  }
+  .pbtn-sm:hover { background: var(--surface-2); color: var(--cyan); border-color: rgba(0,229,255,.2); }
+
+  .res-item {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    padding: .85rem 1rem;
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--surface-border);
+    margin-bottom: .5rem;
+    transition: border-color .3s;
+  }
+  .res-item:hover { border-color: var(--surface-border-hover); }
+  .res-item .emoji { font-size: 1.2rem; flex-shrink: 0; }
+  .res-item .info { flex: 1; min-width: 0; }
+  .res-item .name { font-size: .82rem; font-weight: 600; color: var(--text-bright); }
+  .res-item .desc { font-size: .72rem; color: var(--text-dim); margin-top: .1rem; }
+  .badge {
+    font-size: .6rem;
+    padding: .2rem .5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: .02em;
+  }
+  .badge-free { background: var(--green-dim); color: var(--green); }
+  .badge-paid { background: var(--orange-dim); color: var(--orange); }
+  .rsec { margin-top: 1.2rem; }
+  .rsec h3 { font-size: .92rem; color: var(--cyan); margin-bottom: .6rem; font-weight: 600; }
+
+  @supports(padding-bottom: env(safe-area-inset-bottom)) {
+    .player { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+    body { padding-bottom: calc(160px + env(safe-area-inset-bottom)); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>NØVA — Piano Formazione</h1>
+  <div class="sub">Basi del Projection Mapping su Oggetti</div>
+  <div class="stats"><span>20 giorni</span><span>20 min/giorno</span><span>~7h totali</span><span>audio TTS</span></div>
+</div>
+
+<div class="progress-bar">
+  <div class="pbar"><div class="pfill" id="pFill"></div></div>
+  <div class="ptext"><span id="pLabel">0 di 20</span><span id="pPct">0%</span></div>
+</div>
+
+<!-- HERO CARD — content built via safe DOM methods in JS -->
+<div class="hero" id="heroCard"></div>
+
+<div class="week-nav" id="weekNav">
+  <button class="wtab active" data-w="intro">Intro</button>
+  <button class="wtab" data-w="1">Sett. 1</button>
+  <button class="wtab" data-w="2">Sett. 2</button>
+  <button class="wtab" data-w="3">Sett. 3</button>
+  <button class="wtab" data-w="4">Sett. 4</button>
+  <button class="wtab" data-w="risorse">Risorse</button>
+</div>
+
+<div class="content">
+
+<!-- INTRO -->
+<div class="wsec active" id="sec-intro">
+  <div class="intro-card">
+    <h3>Come funziona</h3>
+    <p>Ogni lezione ha un pulsante <strong style="color:var(--cyan)">Ascolta</strong> che legge il contenuto ad alta voce usando la voce italiana del tuo telefono. Funziona su iPhone (Safari) e Android (Chrome) senza bisogno di app esterne. Clicca play, metti il telefono in tasca, e ascolta mentre guidi.</p>
+  </div>
+  <div class="intro-card">
+    <h3>Controlli durante la guida</h3>
+    <p>Il player in basso ha: <strong>play/pausa</strong> (pulsante grande), <strong>avanti</strong> al giorno successivo, <strong>velocita</strong> (1x, 1.25x, 1.5x). Puoi anche aprire l'articolo originale con il pulsante "Leggi" per approfondire quando non sei in macchina.</p>
+  </div>
+  <div class="intro-card">
+    <h3>Primo utilizzo</h3>
+    <p>La prima volta che premi "Ascolta", il browser potrebbe chiederti il permesso per la sintesi vocale. Accetta. Se la voce non e in italiano, il sistema selezionera automaticamente la migliore voce italiana disponibile.</p>
+  </div>
+</div>
+
+<!-- WEEK 1 -->
+<div class="wsec" id="sec-1">
+  <div class="whead"><h2>Settimana 1 — Capire il Videomapping</h2><p>Dalle basi al panorama italiano</p></div>
+
+  <div class="day" data-day="1">
+    <div class="dhead" onclick="togDay(this)">
+      <div class="dnum">01</div>
+      <div class="dinfo"><div class="dtitle">Che cos'e il videomapping</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~8 min</span></div></div>
+      <div class="darrow">&#x25BC;</div>
+    </div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div>
+      <div class="sname">Tutorial3D.it — "Videomapping, cosa e e come si realizza"</div>
+      <div class="btn-row">
+        <button class="abtn abtn-tts" onclick="playDay(1)">&#x25B6; Ascolta</button>
+        <a class="abtn abtn-link" href="https://www.tutorial3d.it/videomapping/videomapping-come-si-realizza/" target="_blank">Leggi articolo</a>
+        <button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button>
+      </div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Definizione di videomapping, origini storiche, differenza tra mapping 2D e 3D, e i primi esempi reali.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="2">
+    <div class="dhead" onclick="togDay(this)">
+      <div class="dnum">02</div>
+      <div class="dinfo"><div class="dtitle">Il videomapping in Italia</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~10 min</span></div></div>
+      <div class="darrow">&#x25BC;</div>
+    </div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div>
+      <div class="sname">Agenda Digitale — "Digital art: videomapping ed esperienze immersive"</div>
+      <div class="btn-row">
+        <button class="abtn abtn-tts" onclick="playDay(2)">&#x25B6; Ascolta</button>
+        <a class="abtn abtn-link" href="https://www.agendadigitale.eu/cultura-digitale/digital-art-cosa-va-di-moda-videomapping-esperienze-immersive-ecco-i-trend/" target="_blank">Leggi articolo</a>
+        <button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button>
+      </div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>I trend del mercato italiano, le applicazioni attuali del videomapping in Italia, dove sta andando il settore.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="3">
+    <div class="dhead" onclick="togDay(this)">
+      <div class="dnum">03</div>
+      <div class="dinfo"><div class="dtitle">L'arte della superficie</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~12 min</span></div></div>
+      <div class="darrow">&#x25BC;</div>
+    </div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div>
+      <div class="sname">Anna Monteverdi — "Dal videomapping all'interaction design"</div>
+      <div class="btn-row">
+        <button class="abtn abtn-tts" onclick="playDay(3)">&#x25B6; Ascolta</button>
+        <a class="abtn abtn-link" href="https://www.annamonteverdi.it/digital/larte-della-superficie-dal-videomapping-allinteraction-design-per-il-teatro/" target="_blank">Leggi articolo</a>
+        <button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button>
+      </div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Come il mapping si integra con performance dal vivo, scenografia digitale e design interattivo. Utile per il Narrative Mapping di NOVA.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="4">
+    <div class="dhead" onclick="togDay(this)">
+      <div class="dnum">04</div>
+      <div class="dinfo"><div class="dtitle">Luca Agnani — il maestro italiano</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~15 min</span></div></div>
+      <div class="darrow">&#x25BC;</div>
+    </div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div>
+      <div class="sname">Intervista a Luca Agnani, digital artist</div>
+      <div class="btn-row">
+        <button class="abtn abtn-tts" onclick="playDay(4)">&#x25B6; Ascolta</button>
+        <a class="abtn abtn-link" href="https://www.annamonteverdi.it/digital/intervista-a-luca-agnani-digital-artist/" target="_blank">Leggi articolo</a>
+        <button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button>
+      </div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Il percorso di un videomapper professionista italiano: dalla formazione ai grandi progetti come l'Hermitage e la Farnesina.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="5">
+    <div class="dhead" onclick="togDay(this)">
+      <div class="dnum">05</div>
+      <div class="dinfo"><div class="dtitle">Videomapping per eventi</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~10 min</span></div></div>
+      <div class="darrow">&#x25BC;</div>
+    </div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div>
+      <div class="sname">Domenico Marchetti — "Video mapping al tuo evento"</div>
+      <div class="btn-row">
+        <button class="abtn abtn-tts" onclick="playDay(5)">&#x25B6; Ascolta</button>
+        <a class="abtn abtn-link" href="https://domenicomarchetti.it/video-mapping/" target="_blank">Leggi articolo</a>
+        <button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button>
+      </div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Come proporre il mapping a un cliente: vantaggi per eventi corporate, wedding, lanci prodotto. La prospettiva business per NOVA.</p></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- WEEK 2 -->
+<div class="wsec" id="sec-2">
+  <div class="whead"><h2>Settimana 2 — Software e Strumenti</h2><p>Da MadMapper al proiettore</p></div>
+
+  <div class="day" data-day="6">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">06</div><div class="dinfo"><div class="dtitle">I software per videomapping</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~12 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Tutorial3D.it — "I migliori software per creare videomapping"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(6)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.tutorial3d.it/videomapping/i-migliori-software-per-creare-videomapping/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>MadMapper, Resolume Arena, TouchDesigner, HeavyM: pro e contro di ognuno, quale scegliere per il tuo caso.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="7">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">07</div><div class="dinfo"><div class="dtitle">MadMapper — le basi</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~15 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">MadMapper — "My First Video Mapping" (guida ufficiale)</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(7)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://madmapper.com/files/02-My%20First%20Video%20Mapping.pdf" target="_blank">Leggi PDF</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Il workflow base di MadMapper passo per passo: importa media, crea superficie, allinea, proietta. La base di tutto.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="8">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">08</div><div class="dinfo"><div class="dtitle">Proiettori per il mapping</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~10 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Fabrizio Todisco — "Videomapping e Digital Art"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(8)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.fabriziotodisco.com/blog/videomapping-e-digital-art-larte-dellera-digitale/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Lumen, throw ratio, risoluzione: cosa conta per il product mapping. Perche il tuo Epson LS800W funziona come punto di partenza.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="9">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">09</div><div class="dinfo"><div class="dtitle">Mapping e light design</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~10 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Domenico Marchetti — "Projection mapping per eventi di successo"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(9)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://domenicomarchetti.it/projection-mapping-lo-strumento-perfetto-per-gli-eventi/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Come il mapping si integra con il light design, setup tecnico per eventi, gestione della luce ambiente nelle fiere.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="10">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">10</div><div class="dinfo"><div class="dtitle">HeavyM — alternativa entry-level</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~8 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">HeavyM — "Video Mapping: what it is and the simplest way"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(10)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.heavym.net/video-mapping-what-it-is-and-the-simplest-way-to-do-it/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>HeavyM per le prime prove: effetti generativi automatici, prototipi veloci senza creare contenuti video da zero.</p></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- WEEK 3 -->
+<div class="wsec" id="sec-3">
+  <div class="whead"><h2>Settimana 3 — Tecnica e Pratica</h2><p>Processo, narrazione, approfondimenti</p></div>
+
+  <div class="day" data-day="11">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">11</div><div class="dinfo"><div class="dtitle">Il processo completo</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~8 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Tutorial3D.it — "Come si realizza un videomapping"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(11)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.tutorial3d.it/videomapping/videomapping-come-si-realizza/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Processo end-to-end: brief, survey dell'oggetto, modello 3D, contenuti, mapping, calibrazione, show.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="12">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">12</div><div class="dinfo"><div class="dtitle">Videomapping narrativo</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~15 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Anna Monteverdi — "Dal monumentismo al videomapping teatrale"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(12)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.annamonteverdi.it/digital/videomapping-dal-monumentismo-digitale-al-videomapping-teatrale/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>La differenza tra mapping decorativo e narrativo. Come il mapping racconta storie: fondamentale per il Narrative Mapping di NOVA.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="13">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">13</div><div class="dinfo"><div class="dtitle">Corso MadMapper — preview</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~20 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">MadMapper Masterclass (Udemy) — anteprime gratuite</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(13)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.udemy.com/course/projection-mapping/" target="_blank">Vai al corso</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Panoramica professionale del workflow MadMapper. Corso completo a 20-50 euro in sconto.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="14">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">14</div><div class="dinfo"><div class="dtitle">Tutorial principianti 2026</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~18 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Steve Zafeiriou — "Ultimate Projection Mapping Tutorial 2026"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(14)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://stevezafeiriou.com/projection-mapping-tutorial/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Setup hardware, calibrazione, warping, mesh: il tutorial piu completo e aggiornato disponibile.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="15">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">15</div><div class="dinfo"><div class="dtitle">Il mapping visto dalle aziende</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~8 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Enel Learning Hub — "Video Mapping: examples and benefits"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(15)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.enel.com/learning-hub/innovation/video-mapping" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Il mapping dal punto di vista di un grande brand. Utile per posizionare NOVA nei brief aziendali.</p></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- WEEK 4 -->
+<div class="wsec" id="sec-4">
+  <div class="whead"><h2>Settimana 4 — Business e Applicazione</h2><p>Dalla teoria al business NOVA</p></div>
+
+  <div class="day" data-day="16">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">16</div><div class="dinfo"><div class="dtitle">Tecniche professionali</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~10 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">HeavyM — "Top Techniques in a Video Mapping Course"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(16)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.heavym.net/video-mapping-course-techniques-2025/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Le competenze di un mappista professionista: warping, masking, edge blending, content creation, calibrazione.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="17">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">17</div><div class="dinfo"><div class="dtitle">Avviare un'attivita di mapping</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~12 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Commercial Integrator — "So You Want to Start Projection Mapping"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(17)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.commercialintegrator.com/insights/so-you-want-to-start-projection-mapping/141117/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Consigli per chi avvia un'attivita di mapping: errori da evitare, attrezzatura minima, come trovare i primi clienti.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="18">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">18</div><div class="dinfo"><div class="dtitle">Case study: Luca Agnani</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~8 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">La Nouvelle Vague — "La magia del Natale di Luca Agnani"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(18)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.lanouvellevague.it/video-mapping-luca-agnani/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Case study reale italiano: gestione di un grande evento, rapporto artista-committente.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="19">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">19</div><div class="dinfo"><div class="dtitle">Guida pratica 2026</div><div class="dmeta"><span class="lang lang-en">EN</span><span class="dur">~10 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Geeky Gadgets — "Projection Mapping Beginner Guide 2026"</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(19)">&#x25B6; Ascolta</button><a class="abtn abtn-link" href="https://www.geeky-gadgets.com/create-custom-visuals-projection-mapping-guide-2026/" target="_blank">Leggi articolo</a><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Cosa impari</div><p>Trucchi aggiornati al 2026: setup HDMI, mesh warping rapido, consigli pratici per iniziare davvero.</p></div>
+    </div></div></div>
+  </div>
+
+  <div class="day" data-day="20">
+    <div class="dhead" onclick="togDay(this)"><div class="dnum">20</div><div class="dinfo"><div class="dtitle">Riepilogo e piano d'azione</div><div class="dmeta"><span class="lang lang-it">IT</span><span class="dur">~15 min</span></div></div><div class="darrow">&#x25BC;</div></div>
+    <div class="dbody"><div class="dbody-inner"><div class="dbody-content">
+      <div class="slabel">Contenuto della lezione</div><div class="sname">Riepilogo del percorso e prossimi passi</div>
+      <div class="btn-row"><button class="abtn abtn-tts" onclick="playDay(20)">&#x25B6; Ascolta</button><button class="abtn abtn-done" onclick="togDone(this)">&#x25CB; Fatto</button></div>
+      <div class="learn"><div class="ll">Prossimi passi</div><p>Scegli MadMapper come software principale. Scegli il primo progetto pilota dalla lista dei 10. Valuta il corso Udemy. Primo hands-on su una scatola bianca con il tuo Epson. Dedica 1 ora a settimana alla pratica.</p></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- RISORSE -->
+<div class="wsec" id="sec-risorse">
+  <div class="whead"><h2>Risorse di Riferimento</h2><p>Blog, corsi e community</p></div>
+  <div class="rsec"><h3>Blog Italiani</h3>
+    <div class="res-item"><span class="emoji">&#x1F4DD;</span><div class="info"><div class="name">Tutorial3D.it</div><div class="desc">Guide videomapping, recensioni software</div></div><span class="badge badge-free">Gratis</span></div>
+    <div class="res-item"><span class="emoji">&#x1F3AD;</span><div class="info"><div class="name">Anna Monteverdi</div><div class="desc">Teoria e critica del mapping</div></div><span class="badge badge-free">Gratis</span></div>
+    <div class="res-item"><span class="emoji">&#x1F3AA;</span><div class="info"><div class="name">Domenico Marchetti</div><div class="desc">Mapping per eventi, taglio commerciale</div></div><span class="badge badge-free">Gratis</span></div>
+    <div class="res-item"><span class="emoji">&#x1F3A8;</span><div class="info"><div class="name">Luca Agnani Studio</div><div class="desc">Reference qualita italiana</div></div><span class="badge badge-free">Gratis</span></div>
+  </div>
+  <div class="rsec"><h3>Corsi e Workshop</h3>
+    <div class="res-item"><span class="emoji">&#x1F393;</span><div class="info"><div class="name">MadMapper Masterclass (Udemy)</div><div class="desc">Il piu completo, video ascoltabile</div></div><span class="badge badge-paid">&euro;20-50</span></div>
+    <div class="res-item"><span class="emoji">&#x1F393;</span><div class="info"><div class="name">Workshop Medialize.it</div><div class="desc">2 giornate in presenza, Frosinone</div></div><span class="badge badge-paid">~&euro;300</span></div>
+    <div class="res-item"><span class="emoji">&#x1F393;</span><div class="info"><div class="name">Corso Fusolab Roma</div><div class="desc">Laboratorio pratico, italiano</div></div><span class="badge badge-paid">&euro;229</span></div>
+  </div>
+</div>
+
+</div><!-- .content -->
+
+<!-- PLAYER (Driving-Safe) -->
+<div class="player" id="player">
+  <div class="player-info-row">
+    <div class="player-info">
+      <div class="player-day" id="pDay"></div>
+      <div class="player-title" id="pTitle"></div>
+    </div>
+    <div class="player-meta">
+      <button class="speed-badge" id="speedBtn" onclick="cycleSpeed()">1x</button>
+      <button class="player-close" onclick="stopTTS()" title="Chiudi">&#x2715;</button>
+    </div>
+  </div>
+  <div class="player-progress-wrap">
+    <div class="player-progress"><div class="player-progress-fill" id="pProgress"></div></div>
+  </div>
+  <div class="player-controls">
+    <button class="pbtn pbtn-sm" onclick="prevDay()" title="Precedente">&#x23EE;</button>
+    <button class="pbtn pbtn-play" id="pPlayBtn" onclick="togglePlayPause()">&#x25B6;</button>
+    <button class="pbtn pbtn-sm" onclick="nextDay()" title="Successivo">&#x23ED;</button>
+  </div>
+</div>
+
+<script>
+// === LESSON CONTENT FOR TTS ===
+var lessons = {
+  1: {title:"Che cos'e il videomapping",day:"Giorno 1",text:"Benvenuto alla prima lezione del piano formazione NOVA Mapping. Oggi parliamo delle basi: che cos'e il videomapping.\n\nIl videomapping, chiamato anche projection mapping, e una tecnica che trasforma oggetti fisici in superfici di proiezione. A differenza di una proiezione normale su uno schermo piatto, il videomapping adatta il contenuto video alla forma tridimensionale dell'oggetto. Il risultato e che l'oggetto sembra prendere vita, trasformarsi, respirare.\n\nLe origini risalgono agli anni 2000, quando artisti e tecnologi hanno iniziato a proiettare su facciate di edifici. Ma il concetto di base e molto piu vecchio: si chiama realta aumentata spaziale, cioe arricchire la realta fisica con elementi digitali senza bisogno di visori o schermi.\n\nEsistono due tipi principali. Il mapping 2D lavora su superfici piane o quasi piane: muri, facciate, schermi irregolari. Il mapping 3D lavora su oggetti tridimensionali complessi: sculture, prodotti, automobili, bottiglie, scarpe.\n\nPer NOVA Mapping, il focus e sul mapping 3D applicato ai prodotti. Questo significa proiettare su oggetti piccoli e medi durante fiere, lanci prodotto, ed eventi. E una nicchia quasi vuota in Italia, il che rappresenta un'enorme opportunita.\n\nI settori principali dove il videomapping viene utilizzato sono: architettura e monumenti, spettacoli e concerti, eventi aziendali e lanci prodotto, musei e installazioni artistiche, retail e vetrine.\n\nFine della lezione 1. Domani parleremo del panorama italiano del videomapping."},
+  2: {title:"Il videomapping in Italia",day:"Giorno 2",text:"Lezione 2: il videomapping nel panorama italiano.\n\nL'Italia e un mercato particolarmente interessante per il videomapping, per diversi motivi. Primo: abbiamo piu di 900 fiere all'anno, tra le piu importanti al mondo. Salone del Mobile, EICMA, Vinitaly, MICAM, Cosmoprof. Secondo: il Made in Italy si basa sul design e sulla presentazione del prodotto. Terzo: non esiste praticamente nessun operatore specializzato nel product mapping in Italia.\n\nIl mercato globale del projection mapping vale quasi 5 miliardi di dollari e cresce del 23 percento all'anno. In Italia la digital art sta esplodendo: esperienze immersive come quelle dedicate a Van Gogh, Monet, Klimt hanno dimostrato che il pubblico italiano ama la tecnologia applicata all'arte e al design.\n\nI trend principali sono tre. Le esperienze immersive, dove il visitatore e circondato da proiezioni. Il mapping architetturale, usato per eventi natalizi, festival, celebrazioni. E il product mapping, la nicchia di NOVA, dove il prodotto diventa il protagonista di uno show di luce.\n\nLe applicazioni aziendali piu richieste sono: lanci prodotto durante le fiere, allestimenti di stand fieristici, eventi corporate e cene di gala, vetrine e retail experience, installazioni permanenti in showroom.\n\nIl vantaggio competitivo di NOVA e chiaro: mentre i competitor italiani si concentrano su architettura e grandi eventi, nessuno si e specializzato nel mapping su prodotti per le fiere. E un mercato enorme che aspetta di essere servito.\n\nFine della lezione 2. Domani esploreremo il legame tra mapping e performance dal vivo."},
+  3: {title:"L'arte della superficie",day:"Giorno 3",text:"Lezione 3: l'arte della superficie, dal videomapping all'interaction design.\n\nOggi approfondiamo un concetto importante: il mapping non e solo tecnologia, e un linguaggio artistico. Quando proietti su una superficie, stai creando un dialogo tra il digitale e il fisico. La superficie diventa un canvas vivente.\n\nAnna Monteverdi, una delle piu importanti studiose italiane di performance digitale, descrive il videomapping come l'arte della superficie: la capacita di trasformare la materia attraverso la luce. Questo concetto e fondamentale per NOVA perche distingue un servizio tecnico da un servizio creativo.\n\nNel teatro, il mapping ha rivoluzionato la scenografia. Invece di costruire scenari fisici, si proietta su strutture semplici che si trasformano continuamente. Questo approccio si applica perfettamente al mondo fieristico: invece di allestimenti costosi e statici, un proiettore e un contenuto ben progettato possono creare esperienze dinamiche e memorabili.\n\nL'interaction design aggiunge un livello ulteriore. Quando il mapping risponde ai movimenti delle persone, al tocco, al suono, diventa un'esperienza partecipativa. Per NOVA, questo corrisponde al servizio Interactive Mapping: il visitatore si avvicina al prodotto e il prodotto reagisce con animazioni di luce.\n\nI tre livelli di complessita sono: Surface Mapping, dove la proiezione e statica o in loop. Narrative Mapping, dove c'e una storia con inizio, sviluppo e fine. Interactive Mapping, dove l'installazione risponde in tempo reale agli stimoli esterni.\n\nFine della lezione 3. Domani conosceremo Luca Agnani, il maestro italiano del videomapping."},
+  4: {title:"Luca Agnani, il maestro italiano",day:"Giorno 4",text:"Lezione 4: Luca Agnani, il maestro italiano del videomapping.\n\nLuca Agnani e probabilmente il piu importante videomapper italiano. Nato a Macerata nel 1976, ha studiato all'Accademia di Belle Arti e dal 2010 lavora sulle piu importanti architetture italiane e internazionali.\n\nIl suo stile e inconfondibile: colorato, pittorico, che unisce la bellezza monumentale dell'architettura all'effimero della proiezione luminosa. Non e pura tecnologia, e arte che usa la tecnologia come mezzo.\n\nTra i suoi progetti piu importanti: il videomapping sulla facciata dell'Hermitage a San Pietroburgo per i 100 anni della Rivoluzione Russa. Il progetto Farnesina Digital Art Experience per il Ministero degli Esteri italiano. Le installazioni natalizie in Piazza Unita d'Italia a Trieste. E il famoso video virale dove ha animato i dipinti di Van Gogh, che ha fatto il giro del mondo.\n\nCosa possiamo imparare da Agnani per NOVA? Primo: la qualita artistica fa la differenza. Non basta proiettare, bisogna creare qualcosa di bello e significativo. Secondo: il rapporto con il committente e fondamentale. Ogni progetto parte da un brief e da un dialogo con chi commissiona il lavoro. Terzo: la documentazione e tutto. Ogni progetto ben documentato diventa portfolio, e il portfolio genera nuovi clienti.\n\nIl suo percorso dimostra che in Italia c'e spazio per professionisti del videomapping di alto livello. La domanda c'e, manca l'offerta specializzata.\n\nFine della lezione 4. Domani parliamo di come proporre il videomapping ai clienti per eventi."},
+  5: {title:"Videomapping per eventi",day:"Giorno 5",text:"Lezione 5: videomapping per eventi, il punto di vista commerciale.\n\nQuesta lezione e particolarmente importante per NOVA perche affronta il lato business del videomapping. Non basta saper fare mapping: bisogna saperlo vendere.\n\nIl videomapping applicato agli eventi offre vantaggi concreti che i clienti capiscono. L'effetto wow: crea un momento memorabile che i partecipanti condividono sui social. La viralita: un buon mapping viene filmato e condiviso, generando visibilita gratuita. La flessibilita: lo stesso spazio puo trasformarsi completamente con una proiezione diversa. Il costo relativo: rispetto a un allestimento fisico elaborato, il mapping costa meno e ha piu impatto.\n\nI contesti principali dove vendere il servizio sono: fiere di settore, dove le aziende cercano di distinguersi con stand memorabili. Lanci prodotto, dove il nuovo prodotto deve essere presentato in modo spettacolare. Eventi corporate, cene di gala, convention. Retail, vetrine e showroom permanenti.\n\nCome presentare il servizio a un potenziale cliente? Parti dal problema, non dalla soluzione. Il cliente non cerca un videomapping, cerca un modo per attirare visitatori al suo stand, presentare un prodotto in modo unico, creare un'esperienza che si ricordi. Il videomapping e la risposta a questi bisogni.\n\nI tre pacchetti di NOVA riflettono questa logica. Surface Mapping per chi vuole un effetto visivo d'impatto a budget contenuto. Narrative Mapping per chi vuole raccontare una storia. Interactive Mapping per chi vuole un'esperienza partecipativa.\n\nFine della lezione 5 e della prima settimana. La prossima settimana entreremo nel dettaglio dei software e degli strumenti tecnici."},
+  6: {title:"I software per videomapping",day:"Giorno 6",text:"Lezione 6: i software per videomapping, panoramica completa.\n\nBenvenuto alla seconda settimana. Oggi parliamo degli strumenti software, il cuore tecnico del videomapping.\n\nMadMapper e il software piu usato per il mapping su oggetti. Costa circa 450 euro per la licenza. E intuitivo, ha un'interfaccia a doppia vista con input a sinistra e output a destra. Supporta superfici multiple, warping avanzato, e funziona bene con un solo proiettore. Per NOVA e la scelta principale.\n\nResolume Arena e piu orientato al VJing e ai concerti, ma ha funzionalita potenti per il mapping. Costa circa 800 euro. E ideale se vuoi gestire contenuti live e reattivi alla musica. Piu complesso di MadMapper ma piu versatile per show dal vivo.\n\nTouchDesigner e gratuito per uso non commerciale. E un software node-based, cioe lavori collegando nodi invece di usare un'interfaccia tradizionale. Ha una curva di apprendimento ripida ma offre possibilita illimitate, soprattutto per il mapping interattivo con sensori. E la scelta per quando NOVA crescera verso l'Interactive Mapping.\n\nHeavyM e l'opzione entry-level. Costa meno e genera effetti visivi automatici senza bisogno di creare contenuti video. Ottimo per le prime prove e per prototipi veloci da mostrare ai clienti.\n\nIl consiglio per NOVA: inizia con MadMapper come strumento principale. Usa HeavyM per prototipi rapidi. Pianifica l'apprendimento di TouchDesigner per la fase di crescita, quando vorrai aggiungere l'interattivita.\n\nFine della lezione 6. Domani approfondiamo MadMapper."},
+  7: {title:"MadMapper, le basi",day:"Giorno 7",text:"Lezione 7: MadMapper, la guida per principianti.\n\nMadMapper e il software che userai di piu con NOVA. Ecco come funziona a livello concettuale, cosi quando lo aprirai saprai gia orientarti.\n\nL'interfaccia e divisa in due parti. A sinistra c'e l'Input, cioe il tuo contenuto video o immagine. A destra c'e l'Output, cioe quello che il proiettore effettivamente proietta. Il tuo lavoro e collegare i due.\n\nIl workflow base in 5 passi. Primo: importa i media. Trascini il tuo video o immagine nell'area di input. Secondo: crea le superfici. Nell'area output, disegni le forme geometriche che corrispondono al tuo oggetto fisico. Possono essere quadrilateri, triangoli, o mesh piu complesse. Terzo: assegna i media alle superfici. Trascini il contenuto sulle forme. Quarto: allinea. Sposti i vertici delle forme per farle combaciare esattamente con l'oggetto reale che stai proiettando. Quinto: play. Lanci la proiezione e vedi il risultato.\n\nI concetti chiave da ricordare. Le Surfaces sono le forme che definisci nell'output. Il Warping e la deformazione che applichi per adattare la proiezione alla superficie reale. Il Masking nasconde le parti della proiezione che cadono fuori dall'oggetto. I Quad sono superfici a 4 vertici, le piu semplici da usare.\n\nPer il product mapping, il trucco e la precisione nell'allineamento. Su oggetti piccoli, anche un millimetro di disallineamento si nota. Questo e cio che distingue un risultato amatoriale da uno professionale.\n\nFine della lezione 7. Domani parliamo di proiettori."},
+  8: {title:"Proiettori per il mapping",day:"Giorno 8",text:"Lezione 8: come funziona un proiettore per il mapping.\n\nIl proiettore e lo strumento fisico fondamentale. Vediamo cosa conta davvero quando scegli un proiettore per il product mapping.\n\nLumen: e la luminosita del proiettore. Per il mapping in ambienti controllati bastano 3000-4000 lumen. In fiera, dove la luce ambiente e piu forte, servono almeno 5000 lumen. Il tuo Epson LS800W ha 4000 lumen, che funzionano in ambienti semi-controllati come stand con pareti.\n\nThrow ratio: e il rapporto tra distanza e dimensione dell'immagine. Un proiettore ultra-short throw come il tuo Epson proietta un'immagine grande da distanza molto ravvicinata, meno di mezzo metro. Questo e perfetto per stand fieristici piccoli dove non hai spazio. Un proiettore standard richiede piu distanza.\n\nRisoluzione: Full HD e il minimo. Il 4K, che il tuo Epson ha, e ideale per il product mapping perche quando proietti su oggetti piccoli i dettagli contano moltissimo.\n\nLens shift: permette di spostare l'immagine senza muovere fisicamente il proiettore e senza distorsione. E molto utile per l'allineamento fine.\n\nTecnologia laser contro lampada: i proiettori laser come il tuo Epson si accendono istantaneamente, durano di piu, e hanno colori piu stabili. Le lampade tradizionali perdono luminosita nel tempo.\n\nIl tuo Epson LS800W e un buon punto di partenza. I suoi limiti principali sono: e un proiettore home cinema, non professionale. Le ottiche sono fisse. Per la fase di crescita di NOVA, vorrai proiettori con ottiche intercambiabili e luminosita maggiore.\n\nFine della lezione 8. Domani parliamo di light design."},
+  9: {title:"Mapping e light design",day:"Giorno 9",text:"Lezione 9: come il mapping si integra con il light design per eventi.\n\nIl mapping non vive da solo. In un evento o in una fiera, si inserisce in un contesto di illuminazione complessivo. Capire il light design ti aiuta a creare installazioni piu efficaci e a comunicare meglio con gli altri professionisti dell'evento.\n\nIl nemico numero uno del mapping e la luce ambiente. Piu luce c'e nell'ambiente, meno si vedra la tua proiezione. In fiera, questo e un problema reale: le luci dei padiglioni sono forti e i tuoi lumen devono competere con loro.\n\nLe soluzioni pratiche sono diverse. Prima: crea un ambiente controllato. Uno stand con pareti e soffitto riduce drasticamente la luce ambiente. Seconda: usa tendaggi o pannelli scuri intorno all'area di proiezione. Terza: scegli proiettori con piu lumen. Quarta: proietta su superfici bianche o chiare che riflettono meglio la luce.\n\nL'integrazione con il light design dell'evento e fondamentale. Il mapping puo diventare parte di un concept illuminotecnico piu ampio. Le luci dell'ambiente possono essere sincronizzate con la proiezione. L'effetto e molto piu potente quando mapping e illuminazione lavorano insieme.\n\nPer NOVA, questo significa: durante il sopralluogo pre-evento, valuta sempre le condizioni di luce. Chiedi al cliente di prevedere un'area con illuminazione controllata. Porta sempre un metro e una app di misurazione luce. Prevedi un piano B per le condizioni di luce peggiori.\n\nFine della lezione 9. Domani chiudiamo la settimana con HeavyM."},
+  10: {title:"HeavyM, alternativa entry-level",day:"Giorno 10",text:"Lezione 10: HeavyM, l'alternativa entry-level per iniziare subito.\n\nHeavyM e un software di videomapping pensato per chi vuole risultati rapidi senza esperienza precedente. A differenza di MadMapper che richiede contenuti video gia pronti, HeavyM genera effetti visivi in tempo reale.\n\nCome funziona: colleghi il proiettore, definisci le superfici sull'oggetto, e HeavyM genera automaticamente pattern geometrici, effetti di luce, animazioni. Puoi personalizzare colori, velocita, tipo di effetto, ma non devi creare nulla da zero.\n\nI vantaggi per NOVA sono pratici. Per i prototipi: quando un potenziale cliente vuole vedere come sarebbe il mapping sul suo prodotto, puoi fare una demo in pochi minuti con HeavyM. Per le prove: prima di investire tempo nella creazione di contenuti video personalizzati, puoi testare il setup tecnico. Per i piccoli lavori: non tutti i clienti hanno budget per contenuti su misura. HeavyM permette di offrire un servizio base a costo contenuto.\n\nI limiti: gli effetti generativi sono belli ma generici. Non puoi raccontare una storia specifica del brand del cliente. Non puoi creare animazioni su misura. Per questo MadMapper resta lo strumento principale per i lavori professionali.\n\nLa strategia ideale per NOVA: usa HeavyM per le demo commerciali e i prototipi veloci. Usa MadMapper per i progetti pagati con contenuti personalizzati. Man mano che cresci, aggiungi TouchDesigner per l'interattivita.\n\nFine della lezione 10 e della seconda settimana. La prossima settimana approfondiamo la tecnica e la pratica."},
+  11: {title:"Il processo completo",day:"Giorno 11",text:"Lezione 11: il processo completo di un videomapping professionale. Oggi ripercorriamo l'intero workflow dall'inizio alla fine. Primo passo: il brief. Incontri il cliente e capisci cosa vuole comunicare, a chi, in che contesto. Che prodotto vuole mappare? Che messaggio vuole trasmettere? Qual e l'evento? Secondo: il survey. Vai sul posto, misuri l'oggetto, lo fotografi da ogni angolazione, valuti la luce ambiente, la distanza disponibile per il proiettore, le prese elettriche. Se possibile, fai una scansione 3D dell'oggetto. Terzo: il modello digitale. In Blender o con i dati dello scanner, ricrei l'oggetto in 3D nel computer. Questo modello serve come base per creare i contenuti video. Quarto: la produzione dei contenuti. In After Effects, Blender o DaVinci Resolve crei le animazioni che si adatteranno alla forma dell'oggetto. Ogni frame deve combaciare perfettamente con la geometria. Quinto: il mapping e l'allineamento. In MadMapper carichi i contenuti, crei le superfici, e allinei tutto sull'oggetto reale. Questa fase richiede precisione e pazienza. Sesto: calibrazione e test. Almeno 2 ore prima dell'evento per regolare tutto. Controlla da diverse angolazioni, sistema i dettagli, prepara un backup. Settimo: lo show. Tutto funziona, il pubblico e stupito, documenti tutto con foto e video per il portfolio. Questo processo e il cuore del lavoro di NOVA. Fine della lezione 11."},
+  12: {title:"Videomapping narrativo",day:"Giorno 12",text:"Lezione 12: il videomapping narrativo e teatrale. Oggi parliamo della differenza tra mapping decorativo e mapping narrativo, un concetto fondamentale per il servizio Narrative Mapping di NOVA. Il mapping decorativo e un effetto visivo: pattern, luci, colori che si muovono sulla superficie. E bello, attira l'attenzione, ma non racconta nulla. E quello che fanno la maggior parte degli operatori. Il mapping narrativo invece racconta una storia. Ha un inizio, uno sviluppo, un climax e una fine. L'oggetto si trasforma, si decompone e si ricompone, cambia materiale, rivela il suo interno. Lo spettatore non vede solo un effetto ma segue un racconto. Nel teatro, Anna Monteverdi descrive come il videomapping ha sostituito le scenografie fisiche. Una parete bianca puo diventare una foresta, poi un oceano, poi una citta. Lo stesso principio si applica al prodotto: una sneaker bianca puo mostrare il processo di design, i materiali, le texture, e infine il brand. Per NOVA, il Narrative Mapping e il servizio premium. Costa di piu perche richiede uno storyboard, una regia creativa, e contenuti su misura. Ma e anche quello che genera piu valore per il cliente e piu impatto sul pubblico. La chiave e pensare come un regista, non come un tecnico. Fine della lezione 12."},
+  13: {title:"Corso MadMapper, preview",day:"Giorno 13",text:"Lezione 13: il corso MadMapper Masterclass su Udemy. Oggi ti presento il corso piu completo disponibile per imparare MadMapper. Si chiama MadMapper Masterclass e costa tra i 20 e i 50 euro quando e in sconto, che succede spesso. Il corso copre tutto: dall'installazione del software alla creazione di mapping complessi con piu proiettori. Le lezioni sono video ma funzionano bene anche solo in audio per le parti teoriche. Le anteprime gratuite ti danno gia un'idea del livello di qualita. Il docente spiega il workflow professionale passo per passo: come organizzare i progetti, come gestire le superfici, come fare il warping preciso, come lavorare con i layer. Per NOVA, questo corso e un investimento minimo con un ritorno enorme. In poche ore di studio avrai le competenze per gestire MadMapper in modo professionale. Il mio consiglio: compralo questa settimana e guardalo nei weekend quando non sei in macchina. Le parti pratiche richiedono di seguire sullo schermo, ma le spiegazioni teoriche puoi ascoltarle in auto. Fine della lezione 13."},
+  14: {title:"Tutorial principianti 2026",day:"Giorno 14",text:"Lezione 14: il tutorial piu completo per principianti, aggiornato al 2026. Steve Zafeiriou ha scritto la guida definitiva per chi inizia con il projection mapping. E lunga ma copre tutto quello che serve sapere. L'hardware necessario: un proiettore, un computer con scheda grafica dedicata, cavi HDMI, e opzionalmente uno scanner 3D. Il setup: come collegare tutto, come configurare la risoluzione, come gestire le estensioni dello schermo. Il software: come scegliere tra MadMapper, Resolume e TouchDesigner. Le tecniche base: warping con corner pin, warping con bezier, masking, mesh deformation. I trucchi avanzati: come gestire le ombre, come compensare per superfici colorate, come sincronizzare audio e video. I mesh sono particolarmente importanti per il product mapping: una griglia di punti che si deforma per seguire la superficie curva dell'oggetto. Piu punti ha il mesh, piu preciso sara l'adattamento. Questa guida e il tuo riferimento tecnico. Salvala nei preferiti e torna a consultarla quando inizi la pratica. Fine della lezione 14."},
+  15: {title:"Il mapping visto dalle aziende",day:"Giorno 15",text:"Lezione 15: come le grandi aziende vedono il video mapping. Oggi cambiamo prospettiva. Invece di guardare il mapping da tecnici, lo guardiamo con gli occhi del cliente. Le grandi aziende come Enel vedono il video mapping come uno strumento di comunicazione e marketing. Non come fine a se stesso, ma come mezzo per raggiungere obiettivi concreti: lanciare un prodotto, rafforzare il brand, creare engagement, generare contenuti social. Quando presenti NOVA a un potenziale cliente, devi parlare la sua lingua. Non dire uso MadMapper con proiettore 4K e warping avanzato. Di piuttosto creo un'esperienza che i visitatori del vostro stand filmeranno e condivideranno su Instagram, generando visibilita organica per il vostro brand. I KPI che interessano alle aziende sono: numero di visitatori attratti allo stand, tempo medio di permanenza, contenuti social generati, lead raccolti, copertura media. Il mapping e un mezzo, non un fine. Piu sei bravo a collegare il tuo servizio ai risultati di business del cliente, piu facile sara vendere. Fine della lezione 15 e della terza settimana."},
+  16: {title:"Tecniche professionali",day:"Giorno 16",text:"Lezione 16: le tecniche professionali del videomapping. Benvenuto all'ultima settimana. Oggi parliamo delle competenze tecniche che un mappista professionale deve padroneggiare. Warping: la deformazione dell'immagine per adattarla alla superficie. Esistono diversi tipi. Il corner pin sposta i 4 angoli di un quadrilatero. Il bezier warping aggiunge curve per superfici non piatte. Il mesh warping usa una griglia di punti per deformazioni complesse. Masking: nasconde le parti della proiezione che cadono fuori dall'oggetto. E fondamentale per il product mapping, dove la precisione del bordo fa la differenza. Edge blending: quando usi piu proiettori, le zone di sovrapposizione devono sfumare uniformemente. MadMapper e Resolume gestiscono il blending in automatico, ma serve comunque un'attenta calibrazione. Content creation: creare contenuti che funzionino specificamente sulla forma dell'oggetto. Non e proiettare un video qualsiasi, e disegnare il video sulla geometria. Calibrazione: il processo di allineamento finale che richiede pazienza e precisione. Si fa sul posto, con l'oggetto reale, e puo richiedere diverse ore. Queste competenze si acquisiscono con la pratica. Il corso su Udemy e un ottimo punto di partenza, ma il vero apprendimento avviene facendo. Fine della lezione 16."},
+  17: {title:"Avviare un'attivita di mapping",day:"Giorno 17",text:"Lezione 17: consigli pratici per avviare un'attivita di projection mapping. Questa lezione e direttamente applicabile a NOVA. Gli errori da evitare quando si inizia. Non investire troppo in attrezzatura prima di avere clienti. Il tuo Epson LS800W e sufficiente per i primi progetti. Non promettere piu di quello che puoi fare. Meglio un piccolo progetto fatto bene che un grande progetto fatto male. Non trascurare il portfolio: ogni progetto, anche quello piu piccolo, deve essere documentato con foto e video professionali. Come trovare i primi clienti. Parti dalla tua rete: chi conosci che organizza eventi o ha uno stand in fiera? Offri una demo gratuita o a prezzo ridotto per i primi 3 progetti. Usa i risultati come portfolio per attrarre clienti paganti. Contatta le agenzie di eventi della tua zona. Frequenta le fiere come visitatore e fai networking con gli espositori. L'attrezzatura minima per iniziare: un proiettore da 4000 lumen o piu, un laptop con scheda grafica dedicata, MadMapper o HeavyM, cavi e supporti. Con un investimento di 2000-3000 euro puoi iniziare. Il pricing: non vendere ore di lavoro, vendi il risultato. Un pacchetto chiavi in mano ha piu valore percepito di una tariffa oraria. Fine della lezione 17."},
+  18: {title:"Case study: Luca Agnani",day:"Giorno 18",text:"Lezione 18: case study, il progetto natalizio di Luca Agnani. Oggi analizziamo un progetto reale per capire come funziona un videomapping dall'idea al risultato. Luca Agnani e stato incaricato di creare un videomapping natalizio su una facciata monumentale in Italia. Il progetto ha attraversato diverse fasi. La fase di concept: Agnani ha studiato l'architettura dell'edificio, la sua storia, e il tema natalizio. Ha creato uno storyboard che combinava elementi architettonici con la magia del Natale. La fase di produzione: ha modellato l'edificio in 3D e ha creato le animazioni frame per frame. Ogni dettaglio architettonico, finestra, colonna, cornicione, diventava parte dell'animazione. La fase tecnica: ha scelto i proiettori in base alla dimensione della facciata e alla distanza disponibile. Ha fatto sopralluoghi per valutare la luce ambiente e le condizioni meteo. L'evento: il risultato e stato uno show di diversi minuti che ha trasformato la facciata in un racconto visivo. Il pubblico ha filmato e condiviso sui social, generando migliaia di visualizzazioni. Cosa impariamo per NOVA? Il successo di un mapping dipende dalla qualita creativa tanto quanto dalla competenza tecnica. La documentazione del risultato e fondamentale per il business. E il rapporto con il committente deve essere gestito come una collaborazione creativa. Fine della lezione 18."},
+  19: {title:"Guida pratica 2026",day:"Giorno 19",text:"Lezione 19: guida pratica aggiornata al 2026, trucchi e consigli. Oggi parliamo di cose pratiche che ti serviranno quando inizierai davvero a fare mapping. Setup HDMI rapido: quando colleghi il proiettore al laptop, imposta lo schermo esteso, non duplicato. Il proiettore deve mostrare un desktop separato dove MadMapper invia l'output. Se non vedi nulla, controlla le impostazioni dello schermo e la risoluzione. Mesh warping veloce: per oggetti con forme semplici, usa pochi punti di controllo. Per oggetti complessi, aumenta gradualmente la densita del mesh. Un mesh troppo denso e difficile da gestire, uno troppo rado non segue la forma. Calibrazione dei colori: la superficie dell'oggetto influenza il colore proiettato. Bianco e perfetto, colori chiari funzionano bene, colori scuri assorbono la luce e riducono la visibilita. Se proietti su una superficie colorata, dovrai compensare nel contenuto. Backup: porta sempre un backup di tutto su un secondo hard disk. Porta un proiettore di riserva se possibile. Porta cavi di riserva. I cavi HDMI si rompono nei momenti peggiori. Tempo di setup: prevedi almeno il doppio del tempo che pensi ti servira. In fiera le cose vanno sempre storte: prese elettriche lontane, supporti instabili, luci ambientali impreviste. Fine della lezione 19. Domani chiudiamo il percorso."},
+  20: {title:"Riepilogo e piano d'azione",day:"Giorno 20",text:"Lezione 20: riepilogo e piano d'azione. Complimenti, hai completato le 20 lezioni del piano formazione NOVA Mapping. Facciamo il punto su cosa hai imparato e quali sono i prossimi passi. In queste 4 settimane hai acquisito le basi teoriche del videomapping. Sai cos'e, come funziona, e quali sono i software e gli strumenti principali. Conosci il mercato italiano e le opportunita per NOVA. Hai studiato il percorso di professionisti come Luca Agnani. E hai capito come presentare il servizio ai clienti in modo efficace. Ora i prossimi passi concreti. Primo: scegli MadMapper come software principale e scarica la versione trial. Secondo: fai il tuo primo mapping su una scatola bianca con il tuo Epson LS800W. Non deve essere perfetto, deve essere fatto. Terzo: scegli uno dei 10 progetti pilota che abbiamo preparato e realizzalo. Quarto: valuta il corso Udemy MadMapper Masterclass, costa pochissimo e vale molto. Quinto: dedica almeno un'ora alla settimana alla pratica hands-on, oltre allo studio. Sesto: documenta tutto quello che fai con foto e video. Ogni prova e un pezzo di portfolio. Il viaggio di NOVA Mapping inizia qui. Light Beyond Form. Fine del piano formazione."}
+};
+
+// === TTS ENGINE ===
+var synth = window.speechSynthesis;
+var currentUtterance = null;
+var currentDay = null;
+var isPlaying = false;
+var speechRate = 1;
+var totalChars = 0;
+var spokenChars = 0;
+var progressInterval = null;
+
+function getItalianVoice() {
+  var voices = synth.getVoices();
+  var it = voices.filter(function(v) { return v.lang.startsWith('it'); });
+  if (it.length > 0) {
+    var premium = it.find(function(v) { return v.name.indexOf('Enhanced') !== -1 || v.name.indexOf('Premium') !== -1 || v.name.indexOf('Luca') !== -1 || v.name.indexOf('Alice') !== -1; });
+    return premium || it[0];
+  }
+  return voices[0];
+}
+
+function playDay(day) {
+  if (currentDay === day && isPlaying) { pauseTTS(); return; }
+  if (currentDay === day && !isPlaying) { resumeTTS(); return; }
+
+  stopTTS();
+  currentDay = day;
+  var lesson = lessons[day];
+  if (!lesson) return;
+
+  var player = document.getElementById('player');
+  player.classList.add('visible');
+  document.getElementById('pDay').textContent = lesson.day;
+  document.getElementById('pTitle').textContent = lesson.title;
+
+  document.querySelectorAll('.day').forEach(function(d) { d.classList.remove('playing'); });
+  var card = document.querySelector('.day[data-day="' + day + '"]');
+  if (card) card.classList.add('playing');
+
+  speakText(lesson.text);
+
+  document.querySelectorAll('.abtn-tts').forEach(function(b) { b.classList.remove('playing'); b.textContent = '\u25B6 Ascolta'; });
+  if (card) {
+    var btn = card.querySelector('.abtn-tts');
+    if (btn) { btn.classList.add('playing'); btn.textContent = '\u23F8 Pausa'; }
+  }
+}
+
+function speakText(text) {
+  synth.cancel();
+  totalChars = text.length;
+  spokenChars = 0;
+
+  var chunks = text.match(/[^.!?]+[.!?]+/g) || [text];
+  var idx = 0;
+
+  function speakNext() {
+    if (idx >= chunks.length) { onFinish(); return; }
+    var chunk = chunks[idx].trim();
+    if (!chunk) { idx++; speakNext(); return; }
+
+    currentUtterance = new SpeechSynthesisUtterance(chunk);
+    currentUtterance.voice = getItalianVoice();
+    currentUtterance.lang = 'it-IT';
+    currentUtterance.rate = speechRate;
+    currentUtterance.pitch = 1;
+
+    currentUtterance.onend = function() {
+      spokenChars += chunk.length;
+      updatePlayerProgress();
+      idx++;
+      speakNext();
+    };
+    currentUtterance.onerror = function(e) {
+      if (e.error !== 'canceled') { idx++; speakNext(); }
+    };
+
+    synth.speak(currentUtterance);
+  }
+
+  isPlaying = true;
+  document.getElementById('pPlayBtn').textContent = '\u23F8';
+  speakNext();
+
+  if (progressInterval) clearInterval(progressInterval);
+  progressInterval = setInterval(function() {
+    if (synth.speaking && !synth.paused) { /* keep alive for iOS */ }
+  }, 5000);
+}
+
+function updatePlayerProgress() {
+  var pct = totalChars > 0 ? Math.min(100, (spokenChars / totalChars) * 100) : 0;
+  document.getElementById('pProgress').style.width = pct + '%';
+}
+
+function pauseTTS() {
+  synth.pause();
+  isPlaying = false;
+  document.getElementById('pPlayBtn').textContent = '\u25B6';
+  updateTTSButton();
+}
+
+function resumeTTS() {
+  synth.resume();
+  isPlaying = true;
+  document.getElementById('pPlayBtn').textContent = '\u23F8';
+  updateTTSButton();
+}
+
+function togglePlayPause() {
+  if (!currentDay) return;
+  if (isPlaying) pauseTTS();
+  else if (synth.paused) resumeTTS();
+  else playDay(currentDay);
+}
+
+function stopTTS() {
+  synth.cancel();
+  isPlaying = false;
+  currentDay = null;
+  if (progressInterval) clearInterval(progressInterval);
+  document.getElementById('player').classList.remove('visible');
+  document.getElementById('pProgress').style.width = '0%';
+  document.querySelectorAll('.abtn-tts').forEach(function(b) { b.classList.remove('playing'); b.textContent = '\u25B6 Ascolta'; });
+  document.querySelectorAll('.day').forEach(function(d) { d.classList.remove('playing'); });
+}
+
+function nextDay() {
+  if (!currentDay) return;
+  var next = currentDay + 1;
+  if (next <= 20) playDay(next);
+}
+
+function prevDay() {
+  if (!currentDay) return;
+  var prev = currentDay - 1;
+  if (prev >= 1) playDay(prev);
+}
+
+function cycleSpeed() {
+  var speeds = [1, 1.25, 1.5];
+  var labels = ['1x', '1.25x', '1.5x'];
+  var cur = speeds.indexOf(speechRate);
+  var next = (cur + 1) % speeds.length;
+  speechRate = speeds[next];
+  document.getElementById('speedBtn').textContent = labels[next];
+  if (isPlaying && currentDay) playDay(currentDay);
+}
+
+function updateTTSButton() {
+  if (!currentDay) return;
+  var card = document.querySelector('.day[data-day="' + currentDay + '"]');
+  if (!card) return;
+  var btn = card.querySelector('.abtn-tts');
+  if (!btn) return;
+  if (isPlaying) { btn.classList.add('playing'); btn.textContent = '\u23F8 Pausa'; }
+  else { btn.classList.remove('playing'); btn.textContent = '\u25B6 Ascolta'; }
+}
+
+function onFinish() {
+  isPlaying = false;
+  document.getElementById('pPlayBtn').textContent = '\u25B6';
+  updateTTSButton();
+  document.getElementById('pProgress').style.width = '100%';
+  document.querySelectorAll('.day').forEach(function(d) { d.classList.remove('playing'); });
+}
+
+if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = function() {};
+
+// === UI LOGIC ===
+var state = { done: JSON.parse(localStorage.getItem('nova-t-done') || '{}') };
+function save() { localStorage.setItem('nova-t-done', JSON.stringify(state.done)); }
+
+document.querySelectorAll('.wtab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.wtab').forEach(function(x) { x.classList.remove('active'); });
+    document.querySelectorAll('.wsec').forEach(function(x) { x.classList.remove('active'); });
+    t.classList.add('active');
+    document.getElementById('sec-' + t.dataset.w).classList.add('active');
+  });
+});
+
+function togDay(h) { h.closest('.day').classList.toggle('open'); }
+
+function togDone(btn) {
+  var card = btn.closest('.day');
+  var d = card.dataset.day;
+  if (state.done[d]) {
+    delete state.done[d];
+    card.classList.remove('done');
+    btn.textContent = '\u25CB Fatto';
+  } else {
+    state.done[d] = true;
+    card.classList.add('done');
+    btn.textContent = '\u25CF Fatto';
+    var num = card.querySelector('.dnum');
+    if (num) {
+      num.style.animation = 'donePulse .4s cubic-bezier(.4,0,.2,1)';
+      num.addEventListener('animationend', function() { num.style.animation = ''; }, { once: true });
+    }
+  }
+  save();
+  updProg();
+  updateHero();
+}
+
+function updProg() {
+  var n = Object.keys(state.done).length;
+  var p = Math.round(n / 20 * 100);
+  document.getElementById('pFill').style.width = p + '%';
+  document.getElementById('pLabel').textContent = n + ' di 20';
+  document.getElementById('pPct').textContent = p + '%';
+}
+
+function getNextDay() {
+  for (var i = 1; i <= 20; i++) {
+    if (!state.done[i]) return i;
+  }
+  return null;
+}
+
+// === HERO CARD — Safe DOM construction (no innerHTML) ===
+function updateHero() {
+  var hero = document.getElementById('heroCard');
+  // Clear all children safely
+  while (hero.firstChild) { hero.removeChild(hero.firstChild); }
+
+  var doneCount = Object.keys(state.done).length;
+  var next = getNextDay();
+
+  if (doneCount === 20) {
+    // Completed state
+    var wrap = document.createElement('div');
+    wrap.className = 'hero-completed';
+    var checkDiv = document.createElement('div');
+    checkDiv.className = 'check';
+    checkDiv.textContent = '\u2728';
+    var pDone = document.createElement('p');
+    pDone.textContent = 'Percorso completato!';
+    wrap.appendChild(checkDiv);
+    wrap.appendChild(pDone);
+    hero.appendChild(wrap);
+  } else {
+    // Start or resume state
+    var lesson = doneCount === 0 ? lessons[1] : lessons[next];
+    var dayNum = doneCount === 0 ? 1 : next;
+
+    var label = document.createElement('div');
+    label.className = 'hero-label';
+    label.textContent = doneCount === 0 ? 'Inizia il percorso' : 'Riprendi da dove eri rimasto';
+
+    var title = document.createElement('div');
+    title.className = 'hero-title';
+    title.textContent = 'Giorno ' + dayNum + ' \u2014 ' + lesson.title;
+
+    var btn = document.createElement('button');
+    btn.className = 'hero-btn';
+    btn.textContent = '\u25B6  Ascolta ora';
+    btn.addEventListener('click', heroPlay);
+
+    hero.appendChild(label);
+    hero.appendChild(title);
+    hero.appendChild(btn);
+  }
+}
+
+function heroPlay() {
+  var next = getNextDay();
+  if (next) {
+    var weekMap = {1:1,2:1,3:1,4:1,5:1,6:2,7:2,8:2,9:2,10:2,11:3,12:3,13:3,14:3,15:3,16:4,17:4,18:4,19:4,20:4};
+    var week = weekMap[next];
+    document.querySelectorAll('.wtab').forEach(function(x) { x.classList.remove('active'); });
+    document.querySelectorAll('.wsec').forEach(function(x) { x.classList.remove('active'); });
+    var tab = document.querySelector('.wtab[data-w="' + week + '"]');
+    if (tab) tab.classList.add('active');
+    document.getElementById('sec-' + week).classList.add('active');
+
+    var card = document.querySelector('.day[data-day="' + next + '"]');
+    if (card && !card.classList.contains('open')) card.classList.add('open');
+
+    playDay(next);
+
+    setTimeout(function() { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+  }
+}
+
+function init() {
+  document.querySelectorAll('.day').forEach(function(c) {
+    var d = c.dataset.day;
+    if (state.done[d]) {
+      c.classList.add('done');
+      var b = c.querySelector('.abtn-done');
+      if (b) b.textContent = '\u25CF Fatto';
+    }
+  });
+  updProg();
+  updateHero();
+}
+init();
+</script>
+</body>
+</html>
