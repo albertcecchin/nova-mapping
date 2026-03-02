@@ -1016,8 +1016,12 @@ function getItalianVoice() {
   var voices = synth.getVoices();
   var it = voices.filter(function(v) { return v.lang.startsWith('it'); });
   if (it.length > 0) {
-    var premium = it.find(function(v) { return v.name.indexOf('Enhanced') !== -1 || v.name.indexOf('Premium') !== -1 || v.name.indexOf('Luca') !== -1 || v.name.indexOf('Alice') !== -1; });
-    return premium || it[0];
+    var keywords = ['Natural', 'Neural', 'Enhanced', 'Premium', 'Google', 'Luca', 'Alice', 'Federica', 'Paola'];
+    for (var k = 0; k < keywords.length; k++) {
+      var match = it.find(function(v) { return v.name.indexOf(keywords[k]) !== -1; });
+      if (match) return match;
+    }
+    return it[0];
   }
   return voices[0];
 }
@@ -1065,14 +1069,14 @@ function speakText(text) {
     currentUtterance = new SpeechSynthesisUtterance(chunk);
     currentUtterance.voice = getItalianVoice();
     currentUtterance.lang = 'it-IT';
-    currentUtterance.rate = speechRate;
-    currentUtterance.pitch = 1;
+    currentUtterance.rate = speechRate * 0.92;
+    currentUtterance.pitch = 1.05;
 
     currentUtterance.onend = function() {
       spokenChars += chunk.length;
       updatePlayerProgress();
       idx++;
-      speakNext();
+      setTimeout(speakNext, 180);
     };
     currentUtterance.onerror = function(e) {
       if (e.error !== 'canceled') { idx++; speakNext(); }
