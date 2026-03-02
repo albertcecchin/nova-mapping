@@ -654,7 +654,7 @@
   <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--cyan);text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:.04em;margin-bottom:.6rem;transition:opacity .3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">&larr; HOME</a>
   <h1>NØVA — Piano Formazione</h1>
   <div class="sub">Basi del Projection Mapping su Oggetti</div>
-  <div class="stats"><span>20 giorni</span><span>20 min/giorno</span><span>~7h totali</span><span>audio TTS</span></div>
+  <div class="stats"><span>20 giorni</span><span>~2 min/giorno</span><span>~40 min totali</span><span>audio TTS</span></div>
 </div>
 
 <div class="progress-bar">
@@ -1166,8 +1166,9 @@ function updateTTSButton() {
 
 function onFinish() {
   isPlaying = false;
+  currentDay = null;
   document.getElementById('pPlayBtn').textContent = '\u25B6';
-  updateTTSButton();
+  document.querySelectorAll('.abtn-tts').forEach(function(b) { b.classList.remove('playing'); b.textContent = '\u25B6 Ascolta'; });
   document.getElementById('pProgress').style.width = '100%';
   document.querySelectorAll('.day').forEach(function(d) { d.classList.remove('playing'); });
 }
