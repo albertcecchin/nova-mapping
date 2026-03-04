@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>NØVA Mapping — Piano di Formazione</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -1007,10 +1010,11 @@ var audio = new Audio();
 var currentDay = null;
 var isPlaying = false;
 var speechRate = 1;
+var AUDIO_VERSION = 'v1';
 
 function getAudioUrl(day) {
   var num = day < 10 ? '0' + day : '' + day;
-  return 'audio/lesson_' + num + '.mp3';
+  return 'audio/lesson_' + num + '.mp3?' + AUDIO_VERSION;
 }
 
 function playDay(day) {
